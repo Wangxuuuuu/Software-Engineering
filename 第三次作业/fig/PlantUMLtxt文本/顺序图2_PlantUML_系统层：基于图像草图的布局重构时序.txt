@@ -1,0 +1,33 @@
+@startuml
+skinparam maxMessageSize 150
+autonumber
+
+participant "交互工具面板\n(UI组件)" as UI
+participant "图像识别引擎" as Vision
+participant "资产元数据库" as DB
+participant "Blender\n核心生成器" as Blender
+
+[-> UI : 接收上传的城市规划二维草图
+activate UI
+UI -> Vision : 发送图像数据
+activate Vision
+Vision -> Vision : 处理图像并提取线条与特征
+Vision -> Vision : 将2D特征转换为三维空间坐标矩阵
+Vision --> UI : 返回空间布局矩阵数据
+deactivate Vision
+
+UI -> DB : 查询布局所需的基础建筑资产
+activate DB
+DB --> UI : 返回匹配的模型资产信息
+deactivate DB
+
+UI -> Blender : 传递布局矩阵与资产加载指令
+activate Blender
+Blender -> Blender : 清除旧有结构，生成新的路网与建筑网格
+Blender -> Blender : 根据边界范围，自动生成周边的地形与水系
+Blender --> UI : 更新三维场景模型结构
+deactivate Blender
+
+[<-- UI : 展示重构后的城市场景视图
+deactivate UI
+@enduml

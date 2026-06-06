@@ -1,0 +1,57 @@
+@startuml
+left to right direction
+' 恢复默认的 Package 文件夹渲染（取消矩形限制），标签会乖乖呆在左上角 '
+
+actor "场景建模师" as Modeler
+actor "行业分析师" as Analyst
+actor "系统管理员" as Admin
+
+package "界面与权限管理模块" {
+  usecase "身份角色验证与系统登录" as U_Login
+  usecase "平台用户角色与权限维护" as U_Auth
+}
+
+package "场景资源配置模块" {
+  usecase "资产物理文件上传与维护" as U_AssetAdmin
+  usecase "2D/3D场景资产加载与替换" as U_AssetReplace
+  usecase "选取风格模板进行元素联动" as U_Template
+}
+
+package "布局与生态控制模块" {
+  usecase "录入网格点集精确配置路网" as U_Coord
+  usecase "上传二维草图进行特征提取" as U_Sketch
+  usecase "执行边缘自然生态自动生成" as U_Eco
+}
+
+package "多模态与仿真控制模块" {
+  usecase "大模型(LLM)语音语义解析" as U_Parse
+  usecase "自然语言实时调控天色环境" as U_Env
+  usecase "生成防物理碰撞的动态车流" as U_Sim
+}
+
+' ========= 系统内部隐式处理关系 ========= '
+U_Template ..> U_AssetReplace : <<include>>
+U_Env ..> U_Parse : <<include>>
+U_Sim ..> U_Parse : <<include>>
+U_Sketch ..> U_Eco : <<include>>
+U_Coord ..> U_Eco : <<include>>
+
+' ========= 角色与用例的关联 ========= '
+' 建模师主要负责底层架构搭建、模型替换与基础环境控制 
+Modeler --> U_Login
+Modeler --> U_AssetReplace
+Modeler --> U_Template
+Modeler --> U_Coord
+Modeler --> U_Sketch
+Modeler --> U_Env
+
+' 分析师进行轻量级的推演演示与自然语言环境控制
+Analyst --> U_Login
+Analyst --> U_Env
+Analyst --> U_Sim
+
+' 管理员专注后台的运维
+Admin --> U_Login
+Admin --> U_AssetAdmin
+Admin --> U_Auth
+@enduml

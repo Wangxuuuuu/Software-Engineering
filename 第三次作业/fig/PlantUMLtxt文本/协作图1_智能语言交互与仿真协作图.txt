@@ -1,0 +1,23 @@
+@startuml
+skinparam nodesep 100
+skinparam ranksep 100
+skinparam object {
+    BackgroundColor #E8F2FC
+    BorderColor #4A90E2
+}
+
+object "行业分析师" as User
+object ":交互工作台" as UI
+object ":主调度核心" as Main
+object ":大语言模型API" as LLM
+object ":Blender渲染引擎" as Blender
+
+User -right-> UI : 1: 提交文本与语音指令
+UI -right-> Main : 2: 封装并下发场景上下文
+Main -up-> LLM : 3: 提取结构化意图与脚本
+LLM -down-> Main : 4: 传回识别完成的解析数据
+Main -down-> Blender : 5: 传递代码脚本与运算参数
+Blender -up-> Main : 6: 回传最新帧场景渲染流
+Main -left-> UI : 7: 发送操作成功同步信号
+UI -left-> User : 8: 刷新视口呈现最终变化
+@enduml

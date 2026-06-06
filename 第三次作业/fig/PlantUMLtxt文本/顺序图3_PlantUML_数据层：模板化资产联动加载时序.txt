@@ -1,0 +1,36 @@
+@startuml
+autonumber
+
+participant "前端控制器" as Front
+participant "系统核心总线" as Core
+participant "云端资产库" as Server
+participant "渲染内存池" as Mem
+
+[-> Front : 接收用户选择的风格模板ID
+activate Front
+Front -> Core : 请求获取模板配置详情
+activate Core
+Core -> Core : 将模板拆解为对应的多项资产ID组合
+
+Core -> Server : 批量查询这些对象的资产文件状态
+activate Server
+Server -> Server : 检查模型文件与贴图是否完整
+alt 当本地缺失相关资产文件时
+    Server --> Core : 返回资产缺失提示，发起下载请求
+    Core --> Front : 从云端下载缺失的资产文件
+end
+Server --> Core : 返回资产已准备就绪的状态
+deactivate Server
+
+Core -> Mem : 发出资产替换指令，遍历场景目标
+activate Mem
+Mem -> Mem : 卸载待替换的旧模型
+Mem -> Mem : 根据指定坐标加载新的模型与贴图
+Mem --> Core : 返回模型加载完成信号
+deactivate Mem
+
+Core --> Front : 发送界面刷新指令
+deactivate Core
+[<-- Front : 提示模板替换完成，更新画面
+deactivate Front
+@enduml

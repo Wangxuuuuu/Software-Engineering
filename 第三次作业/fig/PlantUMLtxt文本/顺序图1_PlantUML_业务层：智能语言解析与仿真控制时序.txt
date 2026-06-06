@@ -1,0 +1,32 @@
+@startuml
+skinparam maxMessageSize 150
+autonumber
+
+participant "可视前端UI" as UI
+participant "主控调度系统" as MainSys
+participant "大模型(LLM)引擎" as LLM
+participant "Blender\n底层渲染器" as Blender
+
+[-> UI : 接收自然语言指令(如"变雨天并添加车流")
+activate UI
+UI -> MainSys : 封装场景上下文与文本指令
+activate MainSys
+
+MainSys -> LLM : 提交文本指令与场景上下文数据
+activate LLM
+LLM -> LLM : 提取文本语义与操作意图
+LLM --> MainSys : 返回JSON格式意图数据与Python控制脚本
+deactivate LLM
+
+MainSys -> Blender : 下发控制参数与脚本代码
+activate Blender
+Blender -> Blender : 执行脚本更新环境材质与粒子系统(如下雨效果)
+Blender -> Blender : 计算车辆与人员的运动轨迹
+Blender --> MainSys : 返回更新后的场景渲染数据
+deactivate Blender
+
+MainSys --> UI : 发送界面更新信号
+deactivate MainSys
+[<-- UI : 渲染并展示环境更新与动态效果
+deactivate UI
+@enduml

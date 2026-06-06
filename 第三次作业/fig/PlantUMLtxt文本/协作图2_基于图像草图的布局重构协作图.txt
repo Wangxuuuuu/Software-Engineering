@@ -1,0 +1,23 @@
+@startuml
+skinparam nodesep 100
+skinparam ranksep 100
+skinparam object {
+    BackgroundColor #E8FCE8
+    BorderColor #228B22
+}
+
+object "场景建模师" as User
+object ":上传控制面板" as UI
+object ":图像识别引擎" as Vision
+object ":资产元数据库" as DB
+object ":几何生成控制组件" as Gen
+
+User -right-> UI : 1: 载入并上传二维平面草图
+UI -up-> Vision : 2: 发送图片数据要求特征提取
+Vision -down-> UI : 3: 返回解析完毕的三维坐标矩阵
+UI -down-> DB : 4: 查询搭建路网必需的基础资产
+DB -up-> UI : 5: 返回本地可用模型资产记录
+UI -right-> Gen : 6: 传递布局参数与重构指令
+Gen -left-> UI : 7: 回传结构拓扑并更新视图
+UI -left-> User : 8: 界面呈现生成后的三维布局
+@enduml

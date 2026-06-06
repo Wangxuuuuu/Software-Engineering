@@ -1,0 +1,49 @@
+@startuml
+skinparam componentStyle uml2
+skinparam nodesep 60
+skinparam ranksep 60
+
+' -------- 声明纯软件构件 --------
+[前端交互终端应用 (WebApp)] as UI
+[统一路由控制网关 (Router)] as Gateway
+
+[意图语义解析模块 (LLM_Parser)] as Parser
+[图像特征提取中间件 (CV_Vision)] as Vision
+[物理与人群仿真库 (Simulation_Lib)] as Sim
+[资源索引管理包 (Asset_Manager)] as Asset
+
+[Blender核心渲染代理 (Blender_Proxy)] as BlenderCore
+
+' -------- 声明系统内部的编程接口 --------
+interface "API_请求分发接口" as I_Gateway
+interface "文本参数解析接口" as I_Parse
+interface "视觉位图传入接口" as I_Vision
+interface "动作轨迹计算接口" as I_Sim
+interface "场景资源I/O接口" as I_Asset
+interface "底层渲染执行接口" as I_Render
+
+' -------- 绑定接口提供者与消费者 --------
+' 1. 网关暴露接口给UI
+Gateway -up- I_Gateway
+UI ..> I_Gateway : 发起多模态指令
+
+' 2. 业务模块暴露接口给网关调用
+Parser -up- I_Parse
+Vision -up- I_Vision
+Sim -up- I_Sim
+Asset -up- I_Asset
+
+Gateway ..> I_Parse : 转发自然语言文本
+Gateway ..> I_Vision : 转发图像数据流
+Gateway ..> I_Sim : 要求生成避让路径
+Gateway ..> I_Asset : 读取模板资产集信息
+
+' 3. 底层渲染代理暴露接口给上方业务模块
+BlenderCore -up- I_Render
+Parser ..> I_Render : 传入执行逻辑脚本
+Vision ..> I_Render : 传入几何拓扑点阵
+Sim ..> I_Render : 注入逐帧坐标轨迹
+
+' 4. 底层代理依赖资产模块进行模型读取
+BlenderCore .right.> I_Asset : 根据地址进行文件I/O加载
+@enduml

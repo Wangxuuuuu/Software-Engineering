@@ -1,0 +1,69 @@
+@startuml
+skinparam nodesep 60
+skinparam ranksep 80
+
+' ================== 定义物理节点元素 ================== '
+
+node "用户终端机 (User Devices)" as ClientGroup {
+    node "场景建模师_图形工作站" as DesktopNode <<Device>> {
+        artifact "客户端应用程序\n(富终端客户端)" as DesktopApp
+    }
+    
+    node "分析师与管理员_办公终端" as WebNode <<Device>> {
+        artifact "各种主流Web浏览器" as WebBrowser
+    }
+}
+
+node "中心应用服务器 (App Server)" as AppServer <<Server>> {
+    component "Nginx反向代理层" as Nginx
+    
+    node "业务微服务容器 (Docker)" {
+        artifact "统一路由网关服务" as GatewayService
+        artifact "多模态与控制指令解析服务" as CtlService
+        artifact "系统状态与资产调用服务" as AssetService
+    }
+    Nginx -down-> GatewayService : 实施反向代理与网关转发
+}
+
+node "高性能渲染与视觉机架 (GPU Cluster)" as RenderServer <<Execution Environment>> {
+    component "图像识别与视觉引擎" as VisionEngine
+    component "动态仿真推演模块" as SimEngine
+    
+    node "Blender隔离运行沙盒" {
+        artifact "Python代码实时解释环境" as PyRuntime
+        artifact "Blender核心服务线程" as BlenderInstance
+        PyRuntime -down-> BlenderInstance : 调用API驱动底层渲染
+    }
+}
+
+cloud "云端基础设施与API库 (Cloud Services)" as CloudServers {
+    node "大规模数据中心" as DBServer <<Database Node>> {
+        database "MySQL关系库\n(系统配置)" as SQL_DB
+        database "对象存储网关\n(2D/3D资产)" as OSS_DB
+    }
+    
+    node "外部大语言模型(LLM)算力节点" as LLMServer <<Vendor API>> {
+        artifact "模型语义推理服务" as AIService
+    }
+}
+
+' ================== 硬件设备及其协议网络连接 ================== '
+
+' 1. 终端访问中心应用服务器 
+DesktopNode -down-> Nginx : 访问前端页面与业务接口\n<< HTTPS >>
+WebBrowser -down-> Nginx : 访问前端页面与业务接口\n<< HTTPS >>
+
+' 2. 中枢业务层调度 GPU 算力集群 
+GatewayService -down-> VisionEngine : 发起图像像素特征提取请求\n<< TCP/IP (RPC) >>
+CtlService -down-> SimEngine : 触发场景物理仿真节点计算\n<< TCP/IP (RPC) >>
+CtlService -down-> PyRuntime : 下发生成的Python业务构造脚本\n<< TCP/IP >>
+
+' 3. 流媒体画面回传
+BlenderInstance -up-> ClientGroup : 实时推送渲染后的场景音视频流\n<< WebSocket长连接 >>
+
+' 4. 核心数据持久化与外部依赖联通
+AssetService -right-> OSS_DB : 存取物理模型文件及2D贴图\n<< HTTPS >>
+GatewayService -right-> SQL_DB : 读写系统用户与工程档案配置\n<< JDBC >>
+CtlService -right-> AIService : 发送上下文要求大模型推理意图\n<< RESTful API >>
+
+@enduml

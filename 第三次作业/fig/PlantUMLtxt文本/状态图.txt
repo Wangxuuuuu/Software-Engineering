@@ -1,0 +1,48 @@
+@startuml
+skinparam state {
+    BackgroundColor #E8F2FC
+    BorderColor #4A90E2
+    ArrowColor #2C3E50
+}
+
+' 统一别名处理，彻底解决图形断连问题 '
+[*] --> Init : 用户触发[新建方案/载入模板]
+
+state "前置解析与处理区" as Phase1 {
+    state "初始化空工程" as Init
+    state "多模态意图解析中" as Parsing
+}
+
+state "底层引擎构造区" as Phase2 {
+    state "资产资源加载中" as Loading
+    state "网格计算与重构中" as Generating
+}
+
+state "交互视口与应用区" as Phase3 {
+    state "静态场景就绪" as Ready
+    state "动态推演仿真中" as Simulating
+    state "工程存档挂起" as Saved
+}
+
+' ----------- 跨维度的状态流转路径 ----------- '
+
+Init -down-> Parsing : [输入自然语言/草图/坐标参数]
+
+Parsing -down-> Loading : [意图识别与特征提取成功]
+Parsing -right-> Ready : [解析异常或识别中断回调]
+
+Loading -right-> Generating : [文件校验通过并载入内存]
+
+Generating -down-> Ready : [完成模型重组与几何拓扑渲染]
+
+' 进入就绪后的闭环修改与仿真分支 '
+Ready -up-> Parsing : [发起环境调控或二次修改请求]
+Ready -right-> Simulating : [激活车辆与人群物理推演逻辑]
+
+Simulating -left-> Ready : [用户中止或时间推演轴结束]
+
+' 生命周期终结 '
+Ready -down-> Saved : [确认无误,执行工程存档持久化]
+Saved -down-> [*] : [关闭并释放系统进程]
+
+@enduml

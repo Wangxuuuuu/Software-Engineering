@@ -1,0 +1,20 @@
+@startuml
+skinparam nodesep 100
+skinparam ranksep 100
+skinparam object {
+    BackgroundColor #FCE8E8
+    BorderColor #D0021B
+}
+
+object "前端控制器" as Front
+object ":系统核心总线" as Core
+object ":云端资产服务器" as Server
+object ":渲染内存管理池" as Mem
+
+Front -right-> Core : 1: 请求下发预设模板参数
+Core -up-> Server : 2: 批量核对资源的物理状态
+Server -down-> Core : 3: 下发缺陷补充与就绪通知
+Core -down-> Mem : 4: 清空旧模型并装载全新缓存
+Mem -up-> Core : 5: 重新加载高精度网格与贴图
+Core -left-> Front : 6: 下发渲染重绘与界面同步指令
+@enduml

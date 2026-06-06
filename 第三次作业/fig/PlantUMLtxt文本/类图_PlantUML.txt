@@ -1,0 +1,71 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "用户机制模块" {
+  class User {
+    + String User_ID 用户标识
+    + String Username 登录账号
+    + String Password_Hash 密码证明
+    + Enum Role_Type 角色权限
+    + login() 登录验证
+    + verifyPermission() 权限校验
+  }
+}
+
+package "资产与核心数据模块" {
+  class AssetMetadata {
+    + String Asset_ID 资产标识
+    + String Asset_Name 资产名称
+    + String Category 所属类别
+    + String Storage_URL 物理路径
+    + Float Default_Scale 默认缩放
+    + checkStatus() 状态核检
+    + loadIntoMemory() 载入内存
+  }
+
+  class ProjectTemplate {
+    + String Project_ID 工程方案ID
+    + String Project_Name 方案名称
+    + JSON Asset_Links 资产联动树
+    + Blob Layout_Matrix 布局矩阵
+    + saveProject() 保存工程
+    + extractFeatures() 特征提取
+  }
+}
+
+package "多模态与控制模块" {
+  class MultimodalInstruction {
+    + String Session_ID 会话标识
+    + Enum Input_Type 交互模式
+    + Text Raw_Data 原始输入
+    + JSON Parsed_Intent 解析意图
+    + sendToLLM() 推至大模型
+    + generatePythonScript() 生成脚本
+  }
+}
+
+package "底层引擎模块" {
+  class SimulationEntity {
+    + String Entity_ID 仿真实体ID
+    + Array Location 空间坐标点
+    + Array Rotation 旋转欧拉角
+    + Float Speed 行驶速度值
+    + detectCollision() 防撞侦测
+    + calculatePath() 计算轨迹
+  }
+
+  class BlenderRenderer {
+    + Boolean Connection_Status 连接状态
+    + initHandshake() 端口握手
+    + executeScript(Script) 载入脚本
+    + renderFrame() 渲染流回传
+  }
+}
+
+' 模块之间的关联关系 '
+User "1" -- "0..*" ProjectTemplate : 拥有 / 读取
+ProjectTemplate "1" *-- "1..*" AssetMetadata : 构成包含组合
+MultimodalInstruction "1" ..> "1" BlenderRenderer : 输送脚本流
+SimulationEntity "1..*" -- "1" BlenderRenderer : 实时渲染实体状态
+
+@enduml
