@@ -1,0 +1,17 @@
+[MASTER]
+ignore=CVS
+jobs=1
+py-version=3.8
+
+[MESSAGES CONTROL]
+disable=
+    duplicate-code
+
+[FORMAT]
+max-line-length=100
+
+[BASIC]
+good-names=i,j,k,n,idx
+
+[DESIGN]
+max-returns=6

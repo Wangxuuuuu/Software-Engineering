@@ -1,0 +1,6 @@
+PS D:\软件工程\第四次作业> pylint --rcfile=src/.pylintrc src/sliding_window_max.py src/sliding_window_max_naive.py
+
+-------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 9.06/10, +0.94)
+
+PS D:\软件工程\第四次作业> 

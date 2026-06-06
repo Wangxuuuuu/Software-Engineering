@@ -1,0 +1,47 @@
+PS D:\软件工程\第四次作业> python src/test_sliding_window_max.py
+test_naive_module_invalid_k (__main__.TestNaiveModule)
+朴素独立模块：非法 k 返回 None。 ... ok
+test_naive_module_official_example (__main__.TestNaiveModule)
+朴素独立模块：官方示例。 ... ok
+test_consistency_on_json_cases (__main__.TestNaiveOptimizedConsistency)
+JSON 用例上两种实现结果相同。 ... ok
+test_consistency_random_pattern (__main__.TestNaiveOptimizedConsistency)
+构造序列上两种实现一致。 ... ok
+test_all_negative (__main__.TestSlidingWindowFunctional)
+全负整数。 ... ok
+test_all_positive (__main__.TestSlidingWindowFunctional)
+全正整数。 ... ok
+test_cases_from_json (__main__.TestSlidingWindowFunctional)
+遍历 JSON 中全部标准用例。 ... ok
+test_duplicate_max_values (__main__.TestSlidingWindowFunctional)
+窗口内存在重复最大值（n=4, k=3 共 2 个窗口）。 ... ok
+test_mixed_sign_with_zero (__main__.TestSlidingWindowFunctional)
+正负混合且含 0。 ... ok
+test_official_example (__main__.TestSlidingWindowFunctional)
+官方示例。 ... ok
+test_single_element (__main__.TestSlidingWindowFunctional)
+数组长度为 1。 ... ok
+test_empty_array (__main__.TestSlidingWindowValidation)
+空数组应判定非法。 ... ok
+test_k_greater_than_n (__main__.TestSlidingWindowValidation)
+k > len(nums) 应判定非法。 ... ok
+test_k_negative (__main__.TestSlidingWindowValidation)
+k<0 应判定非法。 ... ok
+test_k_zero (__main__.TestSlidingWindowValidation)
+k=0 应判定非法。 ... ok
+test_naive_method_returns_none_when_illegal (__main__.TestSlidingWindowValidation)
+非法输入时朴素方法也返回 None（覆盖错误分支）。 ... ok
+test_non_int_element (__main__.TestSlidingWindowValidation)
+非 int 元素应判定非法。 ... ok
+test_non_int_k (__main__.TestSlidingWindowValidation)
+k 非 int 应判定非法。 ... ok
+test_non_list_input (__main__.TestSlidingWindowValidation)
+非 list 类型应判定非法。 ... ok
+test_solve_returns_none_when_illegal (__main__.TestSlidingWindowValidation)
+非法输入时 solve 返回 None。 ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.015s
+
+OK
+PS D:\软件工程\第四次作业> 

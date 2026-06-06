@@ -1,0 +1,22 @@
+PS D:\软件工程\第四次作业> pylint src/before_pylint/sliding_window_max.py src/before_pylint/sliding_window_max_naive.py
+************* Module sliding_window_max
+src\before_pylint\sliding_window_max.py:22:4: R0911: Too many return statements (7/6) (too-many-return-statements)
+src\before_pylint\sliding_window_max.py:69:21: E1136: Value 'deque' is unsubscriptable (unsubscriptable-object)
+************* Module sliding_window_max_naive
+src\before_pylint\sliding_window_max_naive.py:13:4: C0116: Missing function or method docstring (missing-function-docstring)
+src\before_pylint\sliding_window_max_naive.py:1:0: R0801: Similar lines in 2 files
+==sliding_window_max:[51:62]
+==sliding_window_max_naive:[22:30]
+        result: List[int] = []
+        for start in range(n - self.k + 1):
+            window_max = self.nums[start]
+            for idx in range(start + 1, start + self.k):
+                if self.nums[idx] > window_max:
+                    window_max = self.nums[idx]
+            result.append(window_max)
+        return result (duplicate-code)
+
+------------------------------------------------------------------
+Your code has been rated at 9.06/10 (previous run: 9.06/10, +0.00)
+
+PS D:\软件工程\第四次作业> 
