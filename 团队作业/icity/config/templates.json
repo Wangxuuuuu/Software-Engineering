@@ -1,0 +1,16 @@
+{
+  "0": {
+    "tree_type": 1,
+    "road_texture": 2,
+    "bench_type": 1,
+    "building_density": "medium",
+    "weather": "day"
+  },
+  "1": {
+    "tree_type": 2,
+    "road_texture": 1,
+    "bench_type": 2,
+    "building_density": "high",
+    "weather": "night"
+  }
+}

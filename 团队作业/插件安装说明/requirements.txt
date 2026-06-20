@@ -1,0 +1,16 @@
+有几个问题需要大家注意一下
+第一点 大家在安装我们的Icity插件的时候参考"SCGS说明文档.docx"里SCGS的安装方法，直接解压到插件目录。不要使用别的安装方法
+
+第二点 SCGS插件的运行需要向blender的python环境中安装一些库 安装方式可以参考"SCGS说明文档.docx"提供的安装方式 需要安装的库包括
+Pillow
+numpy
+scipy
+scikit-learn
+scikit-image
+opencv-python
+sknw
+regex
+openai
+
+第三点 由于SCGS是在icity的基础上改的 因此在 Blender偏好设置 -插件 里面 这两个插件的开关不能同时打开 否则会有功能冲突
+（感谢大家的问题反馈）
